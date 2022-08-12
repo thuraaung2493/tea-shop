@@ -1,0 +1,27 @@
+.list-group-item.active > a {
+  z-index: 2;
+  color: var(--bs-list-group-active-color);
+  background-color: var(--bs-list-group-active-bg);
+  border-color: var(--bs-list-group-active-border-color);
+}
+.list-group-item > a {
+  display: block;
+  color: var(--bs-list-group-color);
+}
+
+.list-group-item.disabled > a,
+.list-group-item:disabled > a{
+  color: #6c757d;
+  pointer-events: none;
+  background-color: #fff;
+}
+
+.item-count {
+  width: 2.5rem;
+  text-align: center;
+  padding: .5rem;
+}
+
+.logo-white {
+  filter: brightness(1) contrast(1) opacity(1) saturate(1) invert(1);
+}
