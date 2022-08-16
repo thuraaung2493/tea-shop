@@ -7,11 +7,13 @@ enum TableStatus: string
     case FREE = 'free';
     case RESERVED = 'reserved';
 
-    public function isFree()
+    public function isFree(): bool
     {
-        return match ($this) {
-            TableStatus::FREE => true,
-            TableStatus::RESERVED => false,
-        };
+        return $this === TableStatus::FREE;
+    }
+
+    public function isReserved(): bool
+    {
+        return $this === TableStatus::RESERVED;
     }
 }

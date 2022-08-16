@@ -2,7 +2,9 @@
 
 namespace App\ValueObjects;
 
-class Price
+use JsonSerializable;
+
+class Price implements JsonSerializable
 {
     private function __construct(private readonly float $value)
     {
@@ -21,5 +23,10 @@ class Price
     public function formatted(): string
     {
         return number_format($this->value, 2) . " MMK";
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return get_object_vars($this);
     }
 }

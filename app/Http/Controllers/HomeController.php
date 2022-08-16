@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\CreatePaginatorAction;
 use App\Actions\GetTableSummaryAction;
+use App\Models\Table;
 
 class HomeController extends Controller
 {
@@ -14,9 +15,8 @@ class HomeController extends Controller
 
     public function index()
     {
-        return view('home')->with(
-            'summary',
-            $this->getTableSummary->execute(),
-        );
+        return view('home')
+            ->with('summary', $this->getTableSummary->execute())
+            ->with('freeTables', Table::whereFree()->get());
     }
 }

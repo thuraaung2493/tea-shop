@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\DataTransferObjects\OrderedData;
 use App\ValueObjects\Price;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,13 +17,6 @@ class Order extends Model
     protected $casts = [
         'products' => 'collection',
     ];
-
-    protected function products(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => OrderedData::of($this->castAttribute('products', $value), $this->orderTable),
-        );
-    }
 
     protected function totalAmount(): Attribute
     {

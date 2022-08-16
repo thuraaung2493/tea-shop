@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
+use App\Builders\TableBuilder;
+use App\DataTransferObjects\OrderedData;
 use App\Enums\TableStatus;
+use App\Models\Traits\GenerateTableNo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Str;
 
 class Table extends Model
 {
-    use HasFactory;
+    use HasFactory, GenerateTableNo;
 
     protected $guarded = [];
 
@@ -19,16 +21,14 @@ class Table extends Model
         'status' => TableStatus::class,
     ];
 
-    public static function booted()
+    public function getRouteKeyName()
     {
-        static::creating(function ($table) {
-            $table->no = static::generateCode(static::max('id') ?? 0);
-        });
+        return 'no';
     }
 
-    public static function generateCode(int $id): string
+    public function newEloquentBuilder($query): TableBuilder
     {
-        return 'TBL-' . Str::padLeft(++$id, 3, '0');
+        return new TableBuilder($query);
     }
 
     public function products(): BelongsToMany
@@ -41,8 +41,23 @@ class Table extends Model
         return $this->hasMany(Order::class);
     }
 
-    public function getRouteKeyName()
+    public function currentOrder(): Order
     {
-        return 'no';
+        return $this->orders->where('completed', false)->last();
+    }
+
+    public function currentOrderData(): OrderedData
+    {
+        return OrderedData::of($this);
+    }
+
+    public function otherReservedTables()
+    {
+        return Table::whereOtherReserved($this->no)->get();
+    }
+
+    public function isTransfer(): bool
+    {
+        return $this->status->isReserved();
     }
 }

@@ -1,138 +1,29 @@
-import { Modal } from "bootstrap";
+import { Tooltip } from "bootstrap";
+import Element from "./element";
+import OrderForm from "./orderForm";
+import State from "./state";
 
-window.addEventListener("DOMContentLoaded", documentReady);
+window.addEventListener("DOMContentLoaded", function () {
+  new OrderForm(new State()).addEventListeners();
 
-function documentReady() {
-  document.querySelectorAll(".incrementBtn").forEach(function (ele) {
+  Element.findById("mergeBtn")?.addEventListener("click", function (e) {
+    Element.findById("mergeTableForm")?.submit();
+  });
+
+  Element.get('[data-bs-toggle="tooltip"]').forEach(function (ele) {
+    const url = new URL(decodeURIComponent(document.URL));
+    const mergeTables = url.searchParams.getAll("merge_tables[]");
+
     ele.addEventListener("click", function (e) {
-      let parent = this.parentElement;
-      let input = parent.querySelector("input[type='text']");
-      let value = +input.getAttribute("value");
-      input.setAttribute("value", value + 1);
-      let product = JSON.parse(parent.dataset.product);
+      url.searchParams.delete("merge_tables[]");
 
-      addProduct(product);
-    });
-  });
+      mergeTables
+        .filter((t) => t !== ele.dataset.table)
+        .forEach((t) => url.searchParams.append("merge_tables[]", t));
 
-  document.querySelectorAll(".decrementBtn").forEach(function (ele) {
-    ele.addEventListener("click", function () {
-      let parent = this.parentElement;
-      let input = parent.querySelector("input[type='text']");
-      let value = +input.getAttribute("value");
-      if (value > 0) {
-        input.setAttribute("value", value - 1);
-        let product = JSON.parse(parent.dataset.product);
-
-        removeProduct(product);
-      }
-    });
-  });
-
-  document.getElementById("orderBtn").addEventListener("click", function () {
-    calculateTotalPrice();
-
-    let confirmModal = new Modal(document.getElementById("confirmModal"), {
-      backdrop: "static",
-      keyboard: false,
+      window.location.assign(url);
     });
 
-    let tbody = document.getElementById("tbody");
-    tbody.replaceChildren();
-
-    for (const p of products) {
-      tbody.appendChild(createTableRow(p));
-    }
-
-    addTotalRow(tbody);
-
-    confirmModal.show();
+    return new Tooltip(ele);
   });
-
-  document.getElementById("confirmBtn").addEventListener("click", function () {
-    document.getElementById("orderForm").submit();
-  });
-
-  let products = [];
-
-  function find(product) {
-    return products.find((p) => p.name === product.name);
-  }
-
-  function addProduct(product) {
-    let findProduct = find(product);
-
-    if (findProduct) {
-      ++findProduct.count;
-    } else {
-      products.push({
-        count: 1,
-        image: product.image,
-        name: product.name,
-        price: product.price,
-      });
-    }
-  }
-
-  function removeProduct(product) {
-    let findProduct = find(product);
-
-    if (findProduct) {
-      --findProduct.count;
-    }
-  }
-
-  function addTotalRow(tbody) {
-    let tr = createElement("tr", { class: "fw-bold" });
-    let title = createElement("td", { colspan: 4, class: "text-center" });
-    title.innerText = "Total";
-    let price = createElement("td");
-
-    price.innerText =
-      products.reduce((c, v) => parseInt(c) + parseInt(v.total), 0).toFixed(2) +
-      " MMK";
-
-    tr.appendChild(title);
-    tr.appendChild(price);
-    tbody.appendChild(tr);
-  }
-
-  function createTableRow(p) {
-    let tr = createElement("tr");
-
-    for (const [key, value] of Object.entries(p)) {
-      let td = createElement("td");
-      let ele = null;
-      if (key === "image") {
-        ele = createElement("img", {
-          src: value,
-          width: 100,
-          class: "img-thumbnail",
-        });
-      } else {
-        ele = document.createTextNode(value);
-      }
-      td.appendChild(ele);
-      tr.appendChild(td);
-    }
-
-    return tr;
-  }
-
-  function calculateTotalPrice() {
-    products = products.map((p) => ({
-      ...p,
-      total: (p.price * p.count).toFixed(2),
-    }));
-  }
-
-  function createElement(name, attrs = {}) {
-    let ele = document.createElement(name);
-
-    for (const [name, value] of Object.entries(attrs)) {
-      ele.setAttribute(name, value);
-    }
-
-    return ele;
-  }
-}
+});

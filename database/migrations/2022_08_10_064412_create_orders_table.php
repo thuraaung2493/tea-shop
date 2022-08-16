@@ -15,7 +15,14 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('table_id')->constrained('tables')->cascadeOnUpdate();
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+            $table->foreignId('table_id')
+                ->constrained('tables')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
             $table->json('products');
             $table->unsignedInteger('total_quantity')->default(1);
             $table->decimal('total_amount');

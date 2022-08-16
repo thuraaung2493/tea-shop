@@ -8,9 +8,9 @@ use App\ValueObjects\Price;
 class OrderedItem
 {
     public function __construct(
-        public Product $product,
-        public int $totalQuantity,
-        public Price $totalPrice,
+        public readonly Product $product,
+        public readonly int $totalQuantity,
+        public readonly Price $totalPrice,
     ) {
     }
 }

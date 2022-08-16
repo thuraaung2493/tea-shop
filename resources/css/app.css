@@ -1,3 +1,11 @@
+.vh-max {
+  min-height: calc(100vh - 72px);
+}
+
+.w-50 {
+  width: 50%;
+}
+
 .list-group-item.active > a {
   z-index: 2;
   color: var(--bs-list-group-active-color);
@@ -24,4 +32,30 @@
 
 .logo-white {
   filter: brightness(1) contrast(1) opacity(1) saturate(1) invert(1);
+}
+
+.input-group ~ .invalid-feedback {
+  display: block;
+}
+
+.form-check-label {
+  width: 100%;
+}
+
+#selectTables {
+  color: black;
+  background-color: white;
+  box-shadow: none;
+  border: 1px solid #ced4da;
+}
+
+.dropdown-menu {
+  width: 100%;
+}
+
+.dropdown-toggle {
+  width: 100%;
+}
+.dropdown-toggle::after {
+  margin-left: 9.255em!important;
 }

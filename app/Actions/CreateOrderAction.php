@@ -13,9 +13,10 @@ class CreateOrderAction
         $data->table->save();
 
         $data->table->orders()->create([
+            'user_id' => auth()->id(),
             'products' => $data->productIds,
             'total_quantity' => $data->getTotalQuantity(),
-            'total_amount' => $data->getTotalAmount(),
+            'total_amount' => $data->getTotalAmount()->value(),
         ]);
     }
 }

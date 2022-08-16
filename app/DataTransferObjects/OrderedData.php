@@ -2,6 +2,7 @@
 
 namespace App\DataTransferObjects;
 
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Table;
 use App\ValueObjects\Price;
@@ -29,9 +30,26 @@ class OrderedData
         }));
     }
 
-    public static function of(Collection $data, Table $table)
+    private static function orderedItems(Collection $orders): mixed
     {
-        return static::toInstance($data, $table);
+        $result = collect();
+
+        foreach ($orders as $order) {
+            foreach ($order->products as $id => $count) {
+                $result->put($id, (int) $result->pull($id, 0) + $count);
+            }
+        }
+
+        return $result;
+    }
+
+    public static function of(Table $table)
+    {
+        $order = $table->currentOrder();
+
+        return static::toInstance($order->products, $order->orderTable);
+
+        // return static::toInstance(static::orderedItems($order), $order->map->orderTable);
     }
 
     public static function fromRequest(Request $request): self
@@ -43,11 +61,11 @@ class OrderedData
         return static::toInstance($requestData, $request->table);
     }
 
-    public static function toInstance($data, Table $table)
+    private static function toOrderedItem($data): Collection
     {
         $products = Product::whereIn('id', $data->keys())->get();
 
-        $items = $products->map(function ($product) use ($data) {
+        return $products->map(function ($product) use ($data) {
             $count = $data->get($product->id);
             return new OrderedItem(
                 $product,
@@ -55,11 +73,16 @@ class OrderedData
                 Price::from($product->price->value() * $count),
             );
         });
+    }
+
+    private static function toInstance($data, Table $table)
+    {
+        $items = static::toOrderedItem($data);
 
         return new static($table, $data, $items);
     }
 
-    public static function filter($request): Collection
+    private static function filter(Request $request): Collection
     {
         return collect($request->except(['_token', 'table']))
             ->filter(fn ($val) => (int) $val > 0);

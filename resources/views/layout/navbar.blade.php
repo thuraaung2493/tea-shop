@@ -1,8 +1,8 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <img src="{{ asset('images/home.svg') }}" alt="" width="30" height="24"
-        class="align-text-top d-inline-block logo-white">
+      <x-img src="{{ asset('images/home.svg') }}" width="30" height="24"
+        class="align-text-top d-inline-block logo-white" />
       TeaShop
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -16,11 +16,18 @@
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="#">History</a>
+          <a class="nav-link" aria-current="page" href="{{ route('products.index') }}">Products</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="#">Logout</a>
-        </li>
+        @auth
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{{ route('logout') }}"
+              onclick="event.preventDefault();
+           document.getElementById('logout-form').submit();">Logout</a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+              @csrf
+            </form>
+          </li>
+        @endauth
       </ul>
     </div>
   </div>

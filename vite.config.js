@@ -8,7 +8,9 @@ export default defineConfig({
       input: [
         "resources/css/app.css",
         "resources/js/app.js",
-        "resources/js/app.js",
+        "resources/js/form.js",
+        "resources/js/submitForm.js",
+        "resources/js/tableTransfer.js",
       ],
       refresh: true,
     }),

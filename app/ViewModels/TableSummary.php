@@ -4,25 +4,25 @@ namespace App\ViewModels;
 
 use App\Enums\TableStatus;
 use App\Models\Order;
+use App\Models\Table;
 use App\ValueObjects\Price;
 
 class TableSummary
 {
     public function __construct(
-        public string $tableNo,
-        public TableStatus $status,
+        public Table $table,
         public ?Order $order,
     ) {
     }
 
     public function getBackgroundClass(): string
     {
-        return $this->status->isFree() ? 'bg-success' : 'bg-danger';
+        return $this->table->status->isFree() ? 'bg-success' : 'bg-danger';
     }
 
     public function isCheckout(): bool
     {
-        return !$this->status->isFree() && isset($this->order);
+        return !$this->table->status->isFree() && isset($this->order);
     }
 
     public function getTotalAmount(): Price

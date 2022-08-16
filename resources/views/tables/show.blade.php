@@ -3,7 +3,7 @@
 @section('title', 'Order')
 
 @section('content')
-  @include('tables.confirm-modal')
+  @include('modals.order-confirm-modal')
 
   <div class="container">
     <form action="{{ route('tables.order', $viewModel->currentTable) }}" method="POST" id="orderForm">
@@ -13,7 +13,7 @@
         @foreach ($viewModel->products() as $product)
           <div class="col-3 mb-4">
             <div class="card text-center">
-              <img src="{{ $product->image }}" alt="bugger" class="card-img-top">
+              <x-img src="{{ $product->image }}" alt="bugger" class="card-img-top" />
               <div class="card-body">
                 <h5 class="card-title">{{ $product->name }}</h5>
                 <p class="card-text">
@@ -39,7 +39,3 @@
     </div>
   </div>
 @endsection
-
-@push('scripts')
-  @vite('resources/js/form.js')
-@endpush

@@ -18,8 +18,7 @@ class GetTableSummaryAction
         $result = Table::with('orders')->get()->map(function ($table) {
             $order = $table->orders->where('completed', false)->last();
             return new TableSummary(
-                $table->no,
-                $table->status,
+                $table,
                 $order,
             );
         });

@@ -23,4 +23,11 @@ class Product extends Model
             get: fn ($value) => Price::from($value),
         );
     }
+
+    protected function image(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => route('image', ['image' => $value]),
+        );
+    }
 }
