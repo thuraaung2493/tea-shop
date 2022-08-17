@@ -13,10 +13,12 @@
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
       <ul class="mb-2 navbar-nav mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
+          <a class="nav-link {{ getActiveRouteClass('home') }}" aria-current="page"
+            href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="{{ route('products.index') }}">Products</a>
+          <a class="nav-link {{ getActiveRouteClass('products.index') }}" aria-current="page"
+            href="{{ route('products.index') }}">Products</a>
         </li>
         @auth
           <li class="nav-item">

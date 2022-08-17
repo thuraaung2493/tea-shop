@@ -23,7 +23,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Product::factory()->count(15)->create();
+        Product::factory()->count(15)->create(['image' => 'food.jpg']);
     }
 
     /**

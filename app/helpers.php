@@ -15,3 +15,10 @@ if (!function_exists('imageNameFromUrl')) {
         return $paths[sizeof($paths)];
     }
 }
+
+if (!function_exists('getActiveRouteClass')) {
+    function getActiveRouteClass(string $name, array $parameters = []): string
+    {
+        return route($name, $parameters) === url()->full() ? 'active' : '';
+    }
+}
