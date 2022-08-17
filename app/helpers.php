@@ -7,9 +7,11 @@ if (!function_exists('getActiveRouteClass')) {
     }
 }
 
-if (!function_exists('toFixed')) {
-    function toFixed(int|float $value, int $precision = 2): float
+if (!function_exists('imageNameFromUrl')) {
+    function toFixed(string $imageUrl): string
     {
-        dd(round($value, $precision));
+        $paths = explode('/', $imageUrl);
+
+        return $paths[sizeof($paths)];
     }
 }

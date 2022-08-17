@@ -8,6 +8,7 @@
       'reservedTables' => $viewModel->currentTable->otherReservedTables(),
   ])
 
+
   <div class="row">
     <div class="col-12 col-md-4">
       <div class="mb-3 card border-secondary">
@@ -40,7 +41,8 @@
             </div>
           </h5>
           <div class="d-grid">
-            <button class="mb-3 btn btn-primary">Checkout</button>
+            <button class="mb-3 btn btn-primary" id="checkout"
+              data-checkout-url="{{ route('orders.checkout', $viewModel->currentTable->no) }}">Checkout</button>
             <button class="btn btn-primary" data-bs-toggle="modal"
               data-bs-target="#tableMergeModal">Merge with Other
               Tables</button>

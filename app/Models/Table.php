@@ -17,6 +17,8 @@ class Table extends Model
 
     protected $guarded = [];
 
+    protected $with = ['orders'];
+
     protected $casts = [
         'status' => TableStatus::class,
     ];

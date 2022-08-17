@@ -6,6 +6,7 @@ use App\DataTransferObjects\OrderedData;
 use App\Models\Table;
 use App\ValueObjects\Price;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class CheckoutViewModel
 {
@@ -18,6 +19,27 @@ class CheckoutViewModel
         public readonly Table $currentTable,
         public readonly Collection $checkoutOrders,
     ) {
+    }
+
+    public function orderedDate(): string
+    {
+        return $this->checkoutOrders->last()->table->currentOrder()->created_at->toFormattedDateString();
+    }
+
+    public function invoiceNo(): string
+    {
+        $invNo = $this->checkoutOrders->map(
+            fn ($o) => $o->table->currentOrder()->id
+        )->sort()->join('-');
+
+        return "INV@" . Str::padLeft($invNo, 5, 0);
+    }
+
+    public function items()
+    {
+        return $this->checkoutOrders->reduce(function ($c, $o) {
+            return $c->merge($o->items);
+        }, collect());
     }
 
     public function totalAmount(): Price

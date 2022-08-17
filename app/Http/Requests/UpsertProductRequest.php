@@ -26,9 +26,9 @@ class UpsertProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', Rule::unique('products', 'name')],
+            'name' => ['required', Rule::unique('products', 'name')->ignore($this->product)],
             'price' => ['required', 'numeric'],
-            'image' => ['required', File::image()->types(['png', 'jpg', 'jpeg'])],
+            'image' => ['sometimes', 'required', File::image()->types(['png', 'jpg', 'jpeg'])],
             'description' => ['nullable'],
         ];
     }

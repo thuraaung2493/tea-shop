@@ -3,6 +3,7 @@
 @section('title', 'Products')
 
 @section('main-content')
+  @include('modals.delete-product-confirm')
   <div class="container">
     <div class="row">
       <div class="col-12">
@@ -40,8 +41,16 @@
                     </td>
                     <td>{{ $product->description }}</td>
                     <td>
-                      <a class="btn btn-primary" href="#">Edit</a>
-                      <a class="btn btn-danger" href="#">Delete</a>
+                      <a class="btn btn-primary"
+                        href="{{ route('products.edit', $product->id) }}">Edit</a>
+                      <a class="btn btn-danger deleteBtn" data-id="{{ $product->id }}"
+                        href="{{ route('products.destroy', $product->id) }}">Delete</a>
+                      <form id="delete-product-{{ $product->id }}"
+                        action="{{ route('products.destroy', $product->id) }}" method="POST"
+                        class="d-none">
+                        @csrf
+                        @method('DELETE')
+                      </form>
                     </td>
                   </tr>
                 @endforeach

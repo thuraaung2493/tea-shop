@@ -17,7 +17,7 @@ class TableCheckoutData
     {
         if ($request->has('merge_tables')) {
             return new static(
-                Table::with('orders')->whereIn('no', $request->validated('merge_tables'))->get()->prepend($table)
+                Table::whereIn('no', $request->validated('merge_tables'))->get()->prepend($table)
             );
         }
 

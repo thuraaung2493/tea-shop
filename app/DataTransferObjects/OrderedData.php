@@ -30,26 +30,11 @@ class OrderedData
         }));
     }
 
-    private static function orderedItems(Collection $orders): mixed
-    {
-        $result = collect();
-
-        foreach ($orders as $order) {
-            foreach ($order->products as $id => $count) {
-                $result->put($id, (int) $result->pull($id, 0) + $count);
-            }
-        }
-
-        return $result;
-    }
-
     public static function of(Table $table)
     {
         $order = $table->currentOrder();
 
         return static::toInstance($order->products, $order->orderTable);
-
-        // return static::toInstance(static::orderedItems($order), $order->map->orderTable);
     }
 
     public static function fromRequest(Request $request): self

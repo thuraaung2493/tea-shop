@@ -17,7 +17,7 @@
             Select Merge Tables
           </button>
           <ul class="dropdown-menu" aria-labelledby="selectTables">
-            @foreach ($reservedTables as $table)
+            @forelse ($reservedTables as $table)
               @php
                 $tableNo = $table->no;
                 $isChecked = in_array($tableNo, request()->merge_tables ?? []) ? 'checked' : '';
@@ -31,7 +31,13 @@
                   </label>
                 </div>
               </li>
-            @endforeach
+            @empty
+              <li>
+                <div class="dropdown-item">
+                  No other reserved table
+                </div>
+              </li>
+            @endforelse
           </ul>
         </div>
       </div>

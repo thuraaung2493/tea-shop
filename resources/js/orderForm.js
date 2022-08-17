@@ -50,10 +50,9 @@ export default class OrderForm {
     let value = +input.getAttribute("value");
     if (value > 0) {
       input.setAttribute("value", value - 1);
-      let product = JSON.parse(parent.dataset.product);
-
-      this.state.removeProduct(product);
     }
+    let product = JSON.parse(parent.dataset.product);
+    this.state.removeProduct(product);
   };
 
   handleOrder = () => {
@@ -73,28 +72,8 @@ export default class OrderForm {
   };
 
   handleFormSubmit = () => {
-    this.orderForm.submit();
+    if (this.state.products.length > 0) this.orderForm.submit();
   };
-
-  // createTable() {
-  //   const table = Element.create("table", {
-  //     class: ["table", "table-striped"],
-  //   });
-  //   const tbody = Element.create("tbody", { id: "tbody" });
-  //   table.appendChild(this.createTableHead());
-  //   table.appendChild(tbody);
-  // }
-
-  // createTableHead() {
-  //   const thead = Element.create("thead");
-  //   const headers = ["Quantity", "Image", "Name", "Price", "Total Price"];
-  //   for (const header in headers) {
-  //     const th = Element.create("th");
-  //     th.innerText = header;
-  //     thead.appendChild(th);
-  //   }
-  //   return thead;
-  // }
 
   createTableRow(p) {
     let tr = Element.create("tr");

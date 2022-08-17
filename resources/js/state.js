@@ -32,8 +32,8 @@ export default class State {
   removeProduct(product) {
     let findProduct = this.find(product);
 
-    if (findProduct) {
-      --findProduct.count;
+    if (--findProduct.count === 0) {
+      this.products = this.products.filter((p) => p.name !== findProduct.name);
     }
   }
 }

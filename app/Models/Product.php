@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\ValueObjects\Image;
 use App\ValueObjects\Price;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,7 +28,7 @@ class Product extends Model
     protected function image(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => route('image', ['image' => $value]),
+            get: fn ($value) => Image::from($value),
         );
     }
 }
