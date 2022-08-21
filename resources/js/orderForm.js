@@ -83,7 +83,7 @@ export default class OrderForm {
       let ele = null;
       if (key === "image") {
         ele = Element.create("img", {
-          src: value,
+          src: value.url,
           width: 100,
           class: "img-thumbnail",
         });

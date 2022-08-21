@@ -21,4 +21,9 @@ class Image
     {
         return $this->url;
     }
+
+    public function jsonSerialize(): mixed
+    {
+        return get_object_vars($this);
+    }
 }
